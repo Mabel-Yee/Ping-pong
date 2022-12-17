@@ -19,17 +19,17 @@ class GameSprite(sprite.Sprite):
 #child class
 class Paddle (GameSprite):
     #method to control the sprite with arrow keys
-    def update_left(self):
-        keys = key.get_pressed()
-        if keys[K_UP] and self.rect.y > 1:
-            self.rect.y -= self.speed
-        if keys[K_DOWN] and self.rect.y < win_width - 5:
-            self.rect.y += self.speed
     def update_right(self):
         keys = key.get_pressed()
-        if keys[K_w] and self.rect.y > 1:
+        if keys[K_UP] and self.rect.y > 5:
             self.rect.y -= self.speed
-        if keys[K_s] and self.rect.y < win_width - 5:
+        if keys[K_DOWN] and self.rect.y < win_width - 80:
+            self.rect.y += self.speed
+    def update_left(self):
+        keys = key.get_pressed()
+        if keys[K_w] and self.rect.y > 5:
+            self.rect.y -= self.speed
+        if keys[K_s] and self.rect.y < win_width - 80:
             self.rect.y += self.speed
 
 #interface
@@ -58,8 +58,8 @@ FPS = 60
 #fonts
 font.init()
 font = font.Font(None, 35)
-lose1 = font.render('PLAYER 1 LOSE!', True, (180, 0, 0))
-lose2 = font.render('PLAYER 2 LOSE!', True, (180, 0, 0))
+lose1 = font.render('PLAYER RED LOSE!', True, (180, 0, 0))
+lose2 = font.render('PLAYER BLUE LOSE!', True, (180, 0, 0))
 
 speed_x = 3
 speed_y = 3
@@ -71,11 +71,29 @@ while game:
 
     if finish != True:
         window.fill (BLUE)
-        paddleLeft.update_right()
-        paddleRight.update_left()
+        paddleLeft.update_left()
+        paddleRight.update_right()
 
         ball.rect.x += speed_x
         ball.rect.x += speed_y
+
+    if sprite.collide_rect(paddleLeft, ball) or sprite.collide_rect(paddleRight, ball):
+        speed_x *= -1
+        speed_y *= 1
+
+    #ball bounces when hit the up or bottom wall
+    if ball.rect.y > win_height-50 or ball.rect.y < 0:
+        speed_y *= -1
+
+    #if ball flies behind this paddle, display loss condition for player left
+    if ball.rect.x < 0:
+        finish = False
+        window.blit(lose1, (200, 200))
+
+    #if the ball flies behind this paddle, display loss condition for player right
+    if ball.rect.x > win_width:
+        finish = False
+        window.blit(lose2, (200, 200))
 
         paddleLeft.reset()
         paddleRight.reset()
