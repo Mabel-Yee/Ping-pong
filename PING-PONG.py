@@ -44,8 +44,8 @@ paddleA_img = "paddle_blue.png"
 paddleB_img = "paddle_red.png"
 ball_img = "tennis_ball.png"
 
-paddleLeft = Paddle (paddleA_img, 20, 200, 30, 150, 150)
-paddleRight = Paddle (paddleB_img, 650, 200, 30, 150, 150)
+paddleLeft = Paddle (paddleA_img, 20, 200, 30, 150, 30)
+paddleRight = Paddle (paddleB_img, 650, 200, 30, 150, 30)
 ball = GameSprite(ball_img, 330, 200, 50, 50, 50)
 
 
@@ -58,8 +58,8 @@ FPS = 60
 #fonts
 font.init()
 font = font.Font(None, 35)
-lose1 = font.render('PLAYER RED LOSE!', True, (180, 0, 0))
-lose2 = font.render('PLAYER BLUE LOSE!', True, (180, 0, 0))
+lose1 = font.render('PLAYER BLUE LOSE!', True, (180, 0, 0))
+lose2 = font.render('PLAYER RED LOSE!', True, (180, 0, 0))
 
 speed_x = 3
 speed_y = 3
@@ -77,23 +77,23 @@ while game:
         ball.rect.x += speed_x
         ball.rect.x += speed_y
 
-    if sprite.collide_rect(paddleLeft, ball) or sprite.collide_rect(paddleRight, ball):
-        speed_x *= -1
-        speed_y *= 1
+        if sprite.collide_rect(paddleLeft, ball) or sprite.collide_rect(paddleRight, ball):
+            speed_x *= -1
+            speed_y *= 1
 
     #ball bounces when hit the up or bottom wall
-    if ball.rect.y > win_height-50 or ball.rect.y < 0:
-        speed_y *= -1
+        if ball.rect.y > win_height-50 or ball.rect.y < 0:
+            speed_y *= -1
 
     #if ball flies behind this paddle, display loss condition for player left
-    if ball.rect.x < 0:
-        finish = False
-        window.blit(lose1, (200, 200))
+        if ball.rect.x < 0:
+            finish = False
+            window.blit(lose1, (200, 200))
 
     #if the ball flies behind this paddle, display loss condition for player right
-    if ball.rect.x > win_width:
-        finish = False
-        window.blit(lose2, (200, 200))
+        if ball.rect.x > win_width:
+            finish = False
+            window.blit(lose2, (200, 200))
 
         paddleLeft.reset()
         paddleRight.reset()
