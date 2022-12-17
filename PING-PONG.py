@@ -75,7 +75,7 @@ while game:
         paddleRight.update_right()
 
         ball.rect.x += speed_x
-        ball.rect.x += speed_y
+        ball.rect.y += speed_y
 
         if sprite.collide_rect(paddleLeft, ball) or sprite.collide_rect(paddleRight, ball):
             speed_x *= -1
